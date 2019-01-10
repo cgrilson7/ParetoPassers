@@ -16,14 +16,12 @@ nabs <- function(x) {
   
 }
 
-# get_games
-# Loads one page of game logs at a time from P-F-R play finder (query detailed below)
-get_games <- function(offset=0){
+# get_lines
+# Loads one page of stat lines at a time from P-F-R play finder (query detailed below)
+get_lines <- function(offset=0){
   
   # Description
-  # Scrapes the schedule of all games played in a single NFL season from pro-football-reference.com's "YYYY NFL Weekly Schedule" Example page: https://www.pro-football-reference.com/years/2018/games.htm
-  # Returns a data.frame of the Week,	Day, Date, Time, Winner/tie, Loser/tie, PtsW, PtsL, YdsW, TOW, YdsL, TOL...
-  # ... and links to the boxscore for each game.
+  # 
   
   url <- paste0(
     "https://www.pro-football-reference.com/play-index/pgl_finder.cgi?request=1",
@@ -59,9 +57,9 @@ get_games <- function(offset=0){
         "fmb", "ff", "fr", "f_yds", "f_td")
     
     games_df %<>%
-      filter(!(week %in% c("Week", ""))) %>%
-      mutate(is_away = is_away != "") %>%
-      mutate_at(vars(c(age, game_num, week, cmp:f_td)), nabs) # convert all number columns stored as char to numeric
+      filter(!(week %in% c("Week", ""))) %>% # get rid of relic header rows
+      mutate(is_away = is_away != "") %>% # 
+      mutate_at(vars(c(age, game_num, week, cmp:f_td)), nabs) # convert chr columns to numeric
     
     # Get player P-F-R ids from links
     
@@ -87,14 +85,16 @@ get_games <- function(offset=0){
   
 }
 
-all_games <- list()
+# Loop over pages, building list of stat line data.frames
+stat_lines_list <- list()
 i = 1
-
 for(offset in seq(0,30600,100)){
-  print(i)
-  all_games[[i]] <- get_games(offset)
-  i = i+1
+  stat_lines_list[[i]] <- get_lines(offset)
+  i = i + 1
 }
 
+# Bind data.frames together
 passer_games <- do.call('rbind', all_games)
+
+# Write to file
 save(passer_games, file = "input/passer_games.Rdata")
