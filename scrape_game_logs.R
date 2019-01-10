@@ -16,9 +16,9 @@ nabs <- function(x) {
   
 }
 
-# get_games
-# Loads one page of game logs at a time from P-F-R play finder (query detailed below)
-get_games <- function(offset=0){
+# get_lines
+# Loads one page of stat lines at a time from P-F-R play finder (query detailed below)
+get_lines <- function(offset=0){
   
   # Description
   # Scrapes the schedule of all games played in a single NFL season from pro-football-reference.com's "YYYY NFL Weekly Schedule" Example page: https://www.pro-football-reference.com/years/2018/games.htm
