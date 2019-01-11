@@ -65,6 +65,6 @@ favresque <- passer_games %>%
   filter(att > 1) %>%
   psel(high(td)*high(int))
 
-efficient_and_deadly <- passer_games %>%
+perfection <- passer_games %>%
   filter(att > 10) %>%
   psel(high(pct)*high(ypa))
