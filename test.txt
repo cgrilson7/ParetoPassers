@@ -1,0 +1,15 @@
+player|date|opp|yds|rush_yds
+Warren Moon*|1990-12-16|KAN|527|2
+Tom Brady|2011-09-12|MIA|517|3
+Derek Carr|2016-10-30|TAM|513|13
+Matt Ryan|2016-10-02|CAR|503|14
+Patrick Mahomes|2018-11-19|LAR|478|28
+Russell Wilson|2017-10-29|HOU|452|30
+Steve Young*|1992-09-13|BUF|449|50
+Cam Newton|2011-09-18|GNB|432|53
+Michael Vick|2011-10-02|SFO|416|75
+Cam Newton|2015-12-20|NYG|340|100
+Russell Wilson|2014-10-19|STL|313|106
+Colin Kaepernick|2016-11-27|MIA|296|113
+Cam Newton|2012-12-09|ATL|287|116
+Colin Kaepernick|2013-01-12|GNB|263|181

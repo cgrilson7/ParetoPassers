@@ -26,7 +26,7 @@ vick <- dual_threat %>%
 newton <- dual_threat %>%
   filter(player == "Cam Newton")
 
-
+png("run_pass_tradeoff.png", height = 3000, width=3000, units='px', res=300)
 passer_games %>%
   filter(att > 5) %>%
 ggplot(aes(x = rush_yds, y = yds)) +
@@ -92,6 +92,7 @@ ggplot(aes(x = rush_yds, y = yds)) +
     panel.background = element_blank(),
     text = element_text(family = "Palatino")
   )
+dev.off()
 
 # Build example to explain Pareto optimality:
 example <-

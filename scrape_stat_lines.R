@@ -41,10 +41,10 @@ get_lines <- function(offset=0){
     
     page %>%
       html_nodes("table.sortable.stats_table") %>%
-      html_table() -> games_list
+      html_table() -> lines_table
     
-    games_df <- games_list[[1]][-1,-1]
-    colnames(games_df) <-
+    lines_df <- lines_table[[1]][-1,-1]
+    colnames(lines_df) <-
       c("player", "pos", "age",
         "date", "league",
         "team", "is_away", "opp","result",
@@ -56,7 +56,7 @@ get_lines <- function(offset=0){
         "rush", "rush_yds", "ypr", "rush_td",
         "fmb", "ff", "fr", "f_yds", "f_td")
     
-    games_df %<>%
+    lines_df %<>%
       filter(!(week %in% c("Week", ""))) %>% # get rid of relic header rows
       mutate(is_away = is_away != "") %>% # 
       mutate_at(vars(c(age, game_num, week, cmp:f_td)), nabs) # convert chr columns to numeric
@@ -70,9 +70,9 @@ get_lines <- function(offset=0){
     
     player_links <- all_links[grepl("players/[A-Z]+", all_links)]
     
-    games_df$player_page <- player_links
+    lines_df$player_page <- player_links
   
-    return(games_df)
+    return(lines_df)
   },
   error = function(cond){
     
@@ -98,3 +98,4 @@ passer_games <- do.call('rbind', all_games)
 
 # Write to file
 save(passer_games, file = "input/passer_games.Rdata")
+
