@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## ParetoPassers
 
 Pareto-efficient performances through NFL history.
 
