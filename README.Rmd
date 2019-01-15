@@ -1,8 +1,10 @@
 ---
-title: "README.Rmd"
+title: "README"
 author: "Colin G. Wilson"
 date: "1/15/2019"
-output: html_document
+output:
+  md_document:
+    variant: markdown_github
 ---
 
 ```{r setup, include=FALSE}
