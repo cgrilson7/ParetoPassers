@@ -96,6 +96,10 @@ for(offset in seq(0,30600,100)){
 # Bind data.frames together
 passer_games <- do.call('rbind', all_games)
 
+# Remove asterisks from player names
+passer_games$player <- gsub("[*]", "",passer_games$player)
+
+
 # Write to file
 save(passer_games, file = "input/passer_games.Rdata")
 
