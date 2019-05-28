@@ -1,5 +1,0 @@
-player|date|cmp|att|pct|yds
-Drew Brees|2018-09-09|37|45|82.22|439
-Peyton Manning|2005-01-09|27|33|81.82|458
-Jared Goff|2018-09-27|26|33|78.79|465
-Ben Roethlisberger|2014-10-26|40|49|81.63|522
