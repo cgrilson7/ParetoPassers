@@ -16,10 +16,10 @@ nabs <- function(x) {
   
 }
 
-# get_lines
+# get_qb_lines
 # Loads one page of stat lines at a time from P-F-R play finder (query detailed below)
 # Takes one argument, the paginating 'offset' value (100 records per page).
-get_lines <- function(offset=0){
+get_qb_lines <- function(offset=0){
   
   url <- paste0(
     "https://www.pro-football-reference.com/play-index/pgl_finder.cgi?request=1",
@@ -83,13 +83,13 @@ get_lines <- function(offset=0){
 
 # apply function to sequence of 'offset' values, building list of stat line data.frames
 library(pbapply)
-lines_list <- pblapply(seq(0, 30600, 100), get_lines)
+qb_lines_list <- pblapply(seq(0, 30600, 100), get_qb_lines)
 
 # Bind data.frames together
-passer_games <- do.call('rbind', lines_list)
+qb_lines <- do.call('rbind', qb_lines_list)
 
 # Remove asterisks from player names
-passer_games$player <- gsub("[*]", "", passer_games$player)
+qb_lines$player <- gsub("[*]", "", qb_lines$player)
 
 # Write to file
-save(passer_games, file = "input/passer_games.Rdata")
+save(qb_lines, file = "input/qb_lines.Rdata")
