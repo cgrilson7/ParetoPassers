@@ -75,19 +75,15 @@ get_rb_lines <- function(offset=0){
 }
 
 # Loop over pages, building list of stat line data.frames
-rb_lines_list <- list()
-i = 1
-for(offset in seq(0,46200,100)){
-  rb_lines_list[[i]] <- get_rb_lines(offset)
-  i = i + 1
-  print(i)
-}
+# apply function to sequence of 'offset' values, building list of stat line data.frames
+library(pbapply)
+lines_list <- pblapply(seq(0, 46200, 100), get_rb_lines)
 
 # Bind data.frames together
-rb_lines <- do.call('rbind', rb_lines_list)
+rb_lines <- do.call('rbind', lines_list)
 
 # Remove asterisks from player names
-rb_lines$player <- gsub("[*]", "",rb_lines$player)
+rb_lines$player <- gsub("[*]", "", rb_lines$player)
 
 # Write to file
 save(rb_lines, file = "input/rb_lines.Rdata")

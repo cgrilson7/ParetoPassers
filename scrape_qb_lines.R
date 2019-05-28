@@ -1,8 +1,8 @@
 library(tidyverse)
 
 # Dependencies:
-require(tidyverse); require(rvest); require(foreach); 
-require(magrittr); require(pbapply);
+require(tidyverse); require(rvest); require(foreach)
+require(magrittr); require(pbapply)
 
 # Helpful functions
 nabs <- function(x) {
@@ -18,10 +18,8 @@ nabs <- function(x) {
 
 # get_lines
 # Loads one page of stat lines at a time from P-F-R play finder (query detailed below)
+# Takes one argument, the paginating 'offset' value (100 records per page).
 get_lines <- function(offset=0){
-  
-  # Description
-  # 
   
   url <- paste0(
     "https://www.pro-football-reference.com/play-index/pgl_finder.cgi?request=1",
@@ -58,7 +56,7 @@ get_lines <- function(offset=0){
     
     lines_df %<>%
       filter(!(week %in% c("Week", ""))) %>% # get rid of relic header rows
-      mutate(is_away = is_away != "") %>% # 
+      mutate(is_away = (is_away != "")) %>% # redefine is_away as a boolean
       mutate_at(vars(c(age, game_num, week, cmp:f_td)), nabs) # convert chr columns to numeric
     
     # Get player P-F-R ids from links
@@ -80,26 +78,18 @@ get_lines <- function(offset=0){
     closeAllConnections()
     
   })
-  
   return(out)
-  
 }
 
-# Loop over pages, building list of stat line data.frames
-stat_lines_list <- list()
-i = 1
-for(offset in seq(0,30600,100)){
-  stat_lines_list[[i]] <- get_lines(offset)
-  i = i + 1
-}
+# apply function to sequence of 'offset' values, building list of stat line data.frames
+library(pbapply)
+lines_list <- pblapply(seq(0, 30600, 100), get_lines)
 
 # Bind data.frames together
-passer_games <- do.call('rbind', all_games)
+passer_games <- do.call('rbind', lines_list)
 
 # Remove asterisks from player names
-passer_games$player <- gsub("[*]", "",passer_games$player)
-
+passer_games$player <- gsub("[*]", "", passer_games$player)
 
 # Write to file
 save(passer_games, file = "input/passer_games.Rdata")
-
