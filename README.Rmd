@@ -9,11 +9,6 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# Dependencies
-library(tidyverse)
-library(rPref)
-library(magrittr)
-library(ggrepel)
 ```
 
 ## Pareto Passers
@@ -34,8 +29,17 @@ knitr::include_graphics('plots/pareto_frontier_example.png')
 ```
 
 ## The Dual-Threat Frontier
+#### Allocations of QB single-game passing and rushing yardage totals, and the Pareto frontier past which no other player has both thrown **and** rushed for more yards.
+
+
 
 ```{r}
+# Dependencies
+library(tidyverse)
+library(rPref)
+library(magrittr)
+library(ggrepel)
+
 # Load data from input folder
 load("input/qb_lines.Rdata")
 ```

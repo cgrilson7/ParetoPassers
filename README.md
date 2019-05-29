@@ -18,7 +18,53 @@ To prepare you for the charts I'll eventually present, here is a hypothetical ex
 The Dual-Threat Frontier
 ------------------------
 
+#### Allocations of QB single-game passing and rushing yardage totals, and the Pareto frontier past which no other player has both thrown **and** rushed for more yards.
+
 ``` r
+# Dependencies
+library(tidyverse)
+```
+
+    ## ── Attaching packages ─────────────────────────────────────────────────── tidyverse 1.2.1 ──
+
+    ## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+    ## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
+    ## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
+    ## ✔ readr   1.1.1     ✔ forcats 0.3.0
+
+    ## ── Conflicts ────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+
+``` r
+library(rPref)
+```
+
+    ## 
+    ## Attaching package: 'rPref'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     between
+
+``` r
+library(magrittr)
+```
+
+    ## 
+    ## Attaching package: 'magrittr'
+
+    ## The following object is masked from 'package:purrr':
+    ## 
+    ##     set_names
+
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     extract
+
+``` r
+library(ggrepel)
+
 # Load data from input folder
 load("input/qb_lines.Rdata")
 ```
