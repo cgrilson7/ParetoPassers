@@ -13,10 +13,10 @@ The [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explain
 
 To prepare you for the charts I'll eventually present, here is a hypothetical example I've put together:
 
-<img src="plots/pareto_frontier_example.png" width="100%" />
+<img src="plots/pareto_frontier_example.png" width="80%" />
 
-\#\# The Dual-Threat Frontier
-=============================
+The Dual-Threat Frontier
+------------------------
 
 ``` r
 # Load data from input folder
