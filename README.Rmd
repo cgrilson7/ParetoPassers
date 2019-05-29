@@ -25,9 +25,16 @@ The repository contains scripts used to scrape from Pro-Football-Reference.com's
 This project was inspired by an article written by Neil Paine and Andrea Jones-Rooy of FiveThirtyEight, which lays out the concept of Pareto efficiency and applies it to NBA stat lines: https://fivethirtyeight.com/features/explaining-james-hardens-monster-game-with-a-century-old-economic-theory/
 
 ### What is 'Pareto efficiency'?
-The [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well. 
+The [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well. Pareto efficiency is a way of thinking about possible allocations of resources among individuals or between criteria. In particular, the Pareto efficient outcome, or the 'Pareto frontier', describes the state in which no individual or criterion can be better off or further satisfied, without hurting another individual/criterion.
 
-I've put together this graphic to explain 
+To prepare you for the charts I'll eventually present, here is a hypothetical example I've put together:
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('plots/pareto_frontier_example.png')
+```
+
+
+## The Dual-Threat Frontier
 
 ```{r}
 # Load data from input folder
