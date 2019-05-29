@@ -7,6 +7,7 @@ library(ggrepel)
 library(DT)
 
 load("~/ParetoPassers/input/qb_lines.Rdata")
+qb_lines <- filter(qb_lines, att >= 5)
 stat_choices <- c("Completions" = "cmp",
                   "Attempts" = "att",
                   "Completion %" = "pct",
@@ -38,11 +39,15 @@ ui <- fluidPage(
                      stat_choices, selected = "rush_yds"))
       ),
    fluidRow(
+     column(width = 8,
          plotOutput("frontierPlot", hover = "plotHover")
-        ),
-  fluidRow(
-     DT::dataTableOutput("chosenPlayer")
+        )
      ),
+  fluidRow(
+    column(width = 8,
+     DT::dataTableOutput("chosenPlayer")
+     )
+    ),
    fluidRow(
          DT::dataTableOutput("frontierTable")
     )
@@ -64,13 +69,30 @@ server <- function(input, output) {
       p <- ggplot(qb_lines, aes_string(x = input$stat2, y = input$stat1)) +
         geom_point(size = 2, color = "#000000", alpha = 0.25) +
         geom_point(data = frontier(), color = colorGen(), size = 4) +
-        geom_line(data = frontier(), color = colorGen(), alpha = 0.25, size = 1)
+        geom_line(data = frontier(), color = colorGen(), alpha = 0.25, size = 1) +
+        geom_hline(yintercept = 0) +
+        geom_vline(xintercept = 0) +
+        expand_limits(x=0, y = 0) +
+        theme(
+          # # Text
+          # plot.title = element_text(
+          #   size = 18,
+          #   face = "bold"
+          # ),
+          # plot.subtitle = element_text(size = 12),
+          # plot.caption = element_text(face = 'italic'),
+          axis.title.x = element_text(size = 14, face = 'bold'),
+          axis.title.y = element_text(size = 14, face = 'bold'),
+          axis.text = element_text(size = 12, face = "italic"),
+          panel.background = element_blank()
+        )
       return(p)
    })
    
    output$chosenPlayer <- renderDataTable({
-     nearPoints(qb_lines, input$plotHover, yvar = input$stat1, xvar = input$stat2) %>% slice(1)
-   })
+     nearPoints(qb_lines, input$plotHover, yvar = input$stat1, xvar = input$stat2, maxpoints=1) %>%
+       select(player, age, date, team, opp, result, att, input$stat1, input$stat2)
+   }, options = list(paging = F, searching = F))
    
    output$frontierTable <- renderDataTable({
      frontier() %>%

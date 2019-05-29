@@ -5,6 +5,7 @@ date: "1/15/2019"
 output:
   md_document:
     variant: markdown_github
+always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -14,6 +15,12 @@ library(tidyverse)
 library(rPref)
 library(magrittr)
 library(ggrepel)
+library(shiny)
+library(DT)
+
+# Load the data, which I previously scraped with scripts/scrape_qb_lines.R and saved in input/
+load("input/qb_lines.Rdata")
+
 ```
 
 ## Pareto Passers
@@ -25,27 +32,282 @@ The repository contains scripts used to scrape from Pro-Football-Reference.com's
 This project was inspired by an article written by Neil Paine and Andrea Jones-Rooy of FiveThirtyEight, which lays out the concept of Pareto efficiency and applies it to NBA stat lines: https://fivethirtyeight.com/features/explaining-james-hardens-monster-game-with-a-century-old-economic-theory/
 
 ### What is 'Pareto efficiency'?
-The [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well. Pareto efficiency is a way of thinking about possible allocations of resources among individuals or between criteria. In particular, the Pareto efficient outcome, or the 'Pareto frontier', describes the state in which no individual or criterion can be better off or further satisfied, without hurting another individual/criterion.
+Pareto efficiency is a way of thinking about possible allocations of resources, between individuals or criteria (in our case, statistical measures). In particular, the Pareto efficient outcome, or the 'Pareto frontier', describes the state in which no individual or criterion can be better off or improved without hurting another individual/criterion. For those of you who've taken an intro economics class, you probably encountered Pareto in the form of the "production possibility frontier". For more info, the [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well. 
 
-To prepare you for the charts I'll eventually present, here is a hypothetical example I've put together:
+To prepare you for the charts I'll eventually present, here's an example I've put together:
 
-```{r echo=FALSE, out.width='80%'}
-knitr::include_graphics('plots/pareto_frontier_example.png')
+### Ex. the Pareto frontier for hypothetical Hall of Fame candidates
+
+```{r echo=FALSE,dpi = 200, out.width= "65%", out.extra='style="float:right; padding:10px"'}
+example <-
+  data.frame(
+    Rings = 1:4,
+    MVPs = c(4, 3, 2, 2),
+    name = c("A", "B", "C", "D"),
+    stringsAsFactors = F
+  )
+example_frontier <-
+  example %>%
+  psel(high(Rings) * high(MVPs))
+new_point <-
+  data.frame(Rings = 3, MVPs = 3, name = "E", stringsAsFactors = F)
+new_frontier <-
+  bind_rows(example, new_point) %>%
+  psel(high(Rings) * high(MVPs))
+
+ggplot(example, aes(x = Rings, y = MVPs, label = name)) +
+  scale_x_continuous(limits = c(0, 4.5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 4.5), expand = c(0, 0)) +
+  geom_segment(
+    x = 0,
+    xend = 1,
+    y = 4,
+    yend = 4,
+    size = 1,
+    linetype = 'dashed',
+    color = "#004C54"
+  ) +
+  geom_segment(
+    x = 4,
+    xend = 4,
+    y = 0,
+    yend = 2,
+    size = 1,
+    linetype = 'dashed',
+    color = "#004C54"
+  ) +
+  geom_point(size = 3, color = "grey") +
+  geom_text_repel(size = 6) +
+  geom_point(data = example_frontier, size = 4, color = "#004C54") +
+  geom_line(
+    data = example_frontier,
+    linetype = 'dashed',
+    size = 1,
+    color = "#004C54"
+  ) +
+  geom_point(
+    data = new_point,
+    size = 4,
+    color = "#007a3d",
+    pch = 1
+  ) +
+  geom_text_repel(data = new_point, size = 6, color = "#007a3d") +
+  geom_line(
+    data = new_frontier,
+    linetype = 'dotted',
+    size = 1,
+    color = "#007a3d"
+  ) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  theme(
+    # Text
+    plot.title = element_text(
+      size = 16,
+      face = "bold"
+    ),
+    plot.subtitle = element_text(size = 9),
+    plot.caption = element_text(face = 'italic'),
+    axis.title.x = element_text(size = 16, face = 'bold'),
+    axis.title.y = element_text(size = 16, face = 'bold'),
+    axis.text = element_text(size = 12, face = "italic"),
+    panel.background = element_blank()
+  )
 ```
+When choosing who to induct into the HOF each year, this particular committee bases their decision on two factors alone: 1) the number of MVP awards a player won, and 2) his number of Super Bowl rings. They will not vote a player in if there is another who outperforms (or equals and outperforms) him in **both** categories. In this sense, the class of inductees are the players on the Pareto frontier, beyond which there is no other player with an equal or greater number of both MVPs and rings.
+
+A, B, and D are on the frontier because there is no other player with both more rings and more MVPs. C, however, does not get voted in. While he has more rings than A and B, D has even more -- and D also earned the same amount of MVPs. In this case, C is 'dominated by' D. 
+
+If there were a fifth candidate E, who had earned 3 MVPs and 3 rings in his career, the frontier would shift. B would then become dominated by E, and fail to make the HOF.
+
+Hopefully this helped answer any lingering questions you might have had about Pareto. Now, let's dive in with some real data!
+
+------
+
+## Gunslingers and Precision Passers
+
+#### Allocations of QB single-game passing yardage and completion percentages, and the Pareto frontier past which no other player has both thrown for more yards **and** done so at a higher completion percentage.
+
+```{r echo=F, dpi = 300}
+elite <-
+  qb_lines %>%
+  filter(att >= 10) %>%
+  psel(high(pct) * high(yds)) %>%
+  arrange(player)
+
+team_color <- c(
+  "#101820", #"#FFB612", # Steelers (Roethlisberger)
+  "#FA4616", # Broncos (Morton)
+  rep("#101820",2), # Saints (Brees) - gold: #D3BC8D
+  rep("#97233F", 2), # Cardinals (Warner)
+  "#0C2340", # Titans (Mariota) - light blue: #418FDE
+  "#03202F", # Texans (Schaub) - battle red: #A71930
+  "#002C5F", # Colts (Manning)
+  rep("#0080C6",3), # Chargers (Rivers) - navy: #002A5E, gold: #FFC20E
+  "#002244" # Patriots (Brady)
+)
+names(team_color) <- elite$player_page
+qb_lines %>%
+  filter(att >= 10) %>%
+  ggplot(aes(x = yds, y = pct)) +
+  geom_point(alpha = 0.1, na.rm = T) +
+  geom_line(data = elite, color = "#5b5b5b", size = 1) +
+  geom_segment(
+    x = 0,
+    xend = 115,
+    y = 100,
+    yend = 100,
+    color = "#5b5b5b",
+    size = 1
+  ) +
+  geom_segment(
+    x = 527,
+    xend = 527,
+    y = 0,
+    yend = 78.18,
+    color = "#5b5b5b",
+    size = 1
+  ) +
+  geom_point(data = elite, size = 3) +
+  geom_label_repel(
+    data = elite[seq(1, nrow(elite), 2),],
+    aes(
+      color = player_page,
+      label =
+        paste(
+          paste0(player, " (", team, ")"),
+          # paste0(format.Date(date, "%m/%d/%y"), " vs. ", opp, ", ", result),
+          paste0(
+            cmp, "/", att, " for ", yds, " yards"
+          ),
+          sep = "\n"
+        )
+    ),
+   # nudge_x = 50,
+    nudge_y = 25,
+    direction = 'y',
+    fontface = 'bold',
+    family = 'Palatino',
+    size = 3
+  ) +
+  geom_label_repel(
+    data = elite[seq(2, nrow(elite), 2),],
+    aes(
+      color = player_page,
+      label =
+        paste(
+          paste0(player, " (", team, ")"),
+          # paste0(format.Date(date, "%m/%d/%y"), " vs. ", opp, ", ", result),
+          paste0(
+            cmp, "/", att, " for ", yds, " yards"
+          ),
+          sep = "\n"
+        )
+    ),
+    nudge_y = -25,
+    direction = 'y',
+    fontface = 'bold',
+    family = 'Palatino',
+    size = 3
+  ) +
+  scale_color_manual(values = team_color) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  scale_x_continuous(limits = c(0, 599), expand = c(0,0)) +
+  scale_y_continuous(limits = c(0, 125), expand = c(0,0)) +
+  labs(
+    x = "Yards Passing",
+    y = "Completion Percentage"
+   #, title = "Most Efficient QB Performances in NFL History (Post-Merger)",
+  #  caption = "Source: Pro-Football-Reference.com's play index finder, 1970 - 2019 (Wild Card round)"
+  ) +
+  theme(
+    legend.position = "none",
+    # Text
+    plot.title = element_text(
+      size = 18,
+      face = "bold"
+    ),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(face = 'italic'),
+    axis.title.x = element_text(
+      size = 14,
+      face = 'bold'
+    ),
+    axis.title.y = element_text(
+      size = 14,
+      face = 'bold'
+    ),
+    axis.text = element_text(
+      size = 12,
+      face = "italic"),
+    panel.background = element_blank()
+  )
+```
+
+#### The complete stat lines of players on the frontier, by passing yardage, ascending:
+
+```{r echo=FALSE, results='asis'}
+elite %>%
+  select(player, age, date, team, opp, result, cmp, att, yds, td, int, ypa, adj_ypa) %>%
+  arrange(yds) %>%
+  knitr::kable(row.names = F, format="markdown", padding = 2)
+```
+
+------
 
 ## The Dual-Threat Frontier
+
 #### Allocations of QB single-game passing and rushing yardage totals, and the Pareto frontier past which no other player has both thrown **and** rushed for more yards.
 
-```{r echo=FALSE, out.width='80%'}
-knitr::include_graphics('plots/run_pass_tradeoff.png')
+```{r echo=FALSE, dpi = 250}
+# Build Pareto frontier for pass yds x rushing yds
+dual_threat <- qb_lines %>%
+  filter(att > 5) %>%
+  psel(high(yds) * high(rush_yds))
+
+# Plot
+qb_lines %>%
+  filter(att > 5) %>%
+  ggplot(aes(x = rush_yds, y = yds)) +
+  geom_point(size=1, alpha=0.1, colour="#000000", na.rm = T) +
+  geom_point(data=dual_threat, colour="#00B089", size = 3) +
+  geom_line(data=dual_threat, colour="#00B089", size = 1) +
+  geom_segment(x = 0, xend = 2, y = 527, yend = 527, colour="#00B089", size = 1) +
+  geom_segment(x = 181, xend = 181, y = 0, yend = 263, colour="#00B089", size = 1) +
+  scale_x_continuous(limits = c(0, 225), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 550), expand = c(0, 0)) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  labs(
+          x = "Yards Rushing",
+          y = "Yards Passing",
+          caption = "Source: Pro-Football-Reference.com's play index finder, 1970 - 2019 (thru SB LIII)"
+        ) +
+  theme(
+    # Text
+    plot.title = element_text(
+      size = 18,
+      face = "bold"
+    ),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(face = 'italic'),
+    axis.title.x = element_text(size = 14, face = 'bold'),
+    axis.title.y = element_text(size = 14, face = 'bold'),
+    axis.text = element_text(size = 12, face = "italic"),
+    panel.background = element_blank()
+  )
 ```
 
-The code that generated the above plot:
-```{r}
-# Dependencies:
-# library(tidyverse); library(rPref); library(magrittr); library(ggrepel)
+#### The players on the frontier, from lowest to highest rushing total:
 
-# Load the data, which I previously scraped with scripts/scrape_qb_lines.R and saved in input/
-load("input/qb_lines.Rdata")
+```{r echo=FALSE, results='asis'}
+dual_threat %>%
+  select(player, age, date, team, opp, result, cmp, att, yds, td, int, rush, rush_yds, rush_td) %>%
+  arrange(rush_yds) %>%
+  knitr::kable(row.names = F, format="markdown", padding = 2)
 ```
 
+------
+
+## Try it out yourself! Clone this repo and run app.R in the custom_frontier directory.

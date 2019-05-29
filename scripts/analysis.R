@@ -251,7 +251,7 @@ names(team_color) <- elite$player_page
 p <- passer_games %>%
   filter(att >= 10) %>%
   ggplot(aes(x = yds, y = pct)) +
-  geom_point(alpha = 0.1) +
+  geom_point(alpha = 0.1, na.rm = T) +
   geom_line(data = elite, color = "#5b5b5b", size = 1) +
   geom_segment(
     x = 0,
