@@ -5,12 +5,12 @@ library(magrittr)
 library(ggrepel)
 
 # Load data from input folder
-load("input/passer_games.Rdata")
+load("input/qb_lines.Rdata")
 
 # passer_games %<>%
 #   mutate(rush_yds = rush_yds-sk_yds)
 
-dual_threat <- passer_games %>%
+dual_threat <- qb_lines %>%
   filter(att > 5) %>%
   psel(high(yds) * high(rush_yds))
 
@@ -36,7 +36,7 @@ png(
   units = 'px',
   res = 300
 )
-passer_games %>%
+qb_lines %>%
   filter(att > 5) %>%
   ggplot(aes(x = rush_yds, y = yds)) +
   geom_point(alpha = 0.1) +
@@ -118,8 +118,8 @@ passer_games %>%
   labs(
     x = "Yards Rushing",
     y = "Yards Passing",
-    title = "The Run/Pass Tradeoff",
-    subtitle = "Pareto efficiency in QB single-game rushing/passing yardage,\na frontier past which no other player has both thrown and rushed for more yards.",
+  #  title = "The Run/Pass Tradeoff",
+   # subtitle = "Pareto efficiency in QB single-game rushing/passing yardage,\na frontier past which no other player has both thrown and rushed for more yards.",
     caption = "Source: Pro-Football-Reference.com's play index finder, 1970 - 2018 (Week 17)"
   ) +
   # \n11 of the 14 Pareto-optimal performances were from active players,\n including 3 in the 2019 playoffs (Brady, Wilson, Mahomes).") +

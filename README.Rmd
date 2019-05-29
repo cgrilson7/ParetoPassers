@@ -9,6 +9,11 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# Dependencies
+library(tidyverse)
+library(rPref)
+library(magrittr)
+library(ggrepel)
 ```
 
 ## Pareto Passers
@@ -31,16 +36,16 @@ knitr::include_graphics('plots/pareto_frontier_example.png')
 ## The Dual-Threat Frontier
 #### Allocations of QB single-game passing and rushing yardage totals, and the Pareto frontier past which no other player has both thrown **and** rushed for more yards.
 
+```{r echo=FALSE, out.width='80%'}
+knitr::include_graphics('plots/run_pass_tradeoff.png')
+```
 
-
+The code that generated the above plot:
 ```{r}
-# Dependencies
-library(tidyverse)
-library(rPref)
-library(magrittr)
-library(ggrepel)
+# Dependencies:
+# library(tidyverse); library(rPref); library(magrittr); library(ggrepel)
 
-# Load data from input folder
+# Load the data, which I previously scraped with scripts/scrape_qb_lines.R and saved in input/
 load("input/qb_lines.Rdata")
 ```
 
