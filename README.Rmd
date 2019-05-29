@@ -38,7 +38,7 @@ To prepare you for the charts I'll eventually present, here's an example I've pu
 
 ### Ex. the Pareto frontier for hypothetical Hall of Fame candidates
 
-```{r echo=FALSE,dpi = 200, out.width= "65%", out.extra='style="float:right; padding:10px"'}
+```{r echo=FALSE,dpi = 200, out.width= "50%", out.extra='style="float:right; padding:10px"'}
 example <-
   data.frame(
     Rings = 1:4,
