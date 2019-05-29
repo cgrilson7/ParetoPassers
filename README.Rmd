@@ -33,8 +33,8 @@ To prepare you for the charts I'll eventually present, here is a hypothetical ex
 knitr::include_graphics('plots/pareto_frontier_example.png')
 ```
 
-
 ## The Dual-Threat Frontier
+=======
 
 ```{r}
 # Load data from input folder

@@ -15,8 +15,8 @@ To prepare you for the charts I'll eventually present, here is a hypothetical ex
 
 <img src="plots/pareto_frontier_example.png" width="100%" />
 
-The Dual-Threat Frontier
-------------------------
+\#\# The Dual-Threat Frontier
+=============================
 
 ``` r
 # Load data from input folder
