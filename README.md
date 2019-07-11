@@ -9,7 +9,7 @@ This project was inspired by an article written by Neil Paine and Andrea Jones-R
 
 ### What is 'Pareto efficiency'?
 
-Pareto efficiency is a way of thinking about possible allocations of resources, between individuals or criteria (in our case, statistical measures). In particular, the Pareto efficient outcome, or the 'Pareto frontier', describes the state in which no individual or criterion can be better off or improved without hurting another individual/criterion. For those of you who've taken an intro economics class, you probably encountered Pareto in the form of the "production possibility frontier". For more info, this [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well.
+Pareto efficiency is a way of thinking about possible allocations of resources, whether those resources are physical - goods divided amongst individuals in an economy, or imaginary - criteria that can only be satisfied to a certain degree. In particular, the Pareto efficient outcome, or the 'Pareto frontier', describes the state in which no individual or criterion can be better off or improved without hurting another individual/criterion. For those of you who've taken an intro economics class, you probably encountered Pareto in the form of the "production possibility frontier".  For more info, this [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well.
 
 ------------------------------------------------------------------------
 
@@ -23,6 +23,10 @@ In this group of candidates with incredibly unimaginative parents, A, B, and D a
 If there were a fifth candidate E, who had earned 3 MVPs and 3 rings in his career, the frontier would shift. B would then become dominated by E, and fail to make the HOF.
 
 ------------------------------------------------------------------------
+
+Below, I've charted a couple of interesting cases, but I invite you to try it out yourself! Clone this repo and run app.R in the custom_frontier folder. 
+
+What Pareto frontiers can you trace through NFL history? What combo of statistics can you find that set an exceptional group of performances apart from all others?
 
 Gunslingers and Precision Passers
 ---------------------------------
@@ -78,6 +82,3 @@ The Dual-Threat Frontier
 | Colin Kaepernick |  25.070| 2013-01-12 | SFO  | GNB | W 45-31 |   17|   31|  263|    2|    1|    16|        181|         2|
 
 ------------------------------------------------------------------------
-
-Try it out yourself! Clone this repo and run app.R in the custom\_frontier directory.
--------------------------------------------------------------------------------------
