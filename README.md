@@ -15,7 +15,9 @@ To prepare you for the charts I'll eventually present, here's an example I've pu
 
 ### Ex. the Pareto frontier for hypothetical Hall of Fame candidates
 
-When choosing who to induct into the HOF each year, this particular committee bases their decision on two factors alone: 1) the number of MVP awards a player won, and 2) his number of Super Bowl rings. <img src="README_files/figure-markdown_github/unnamed-chunk-1-1.png" width="55%" style="float:right; padding:10px" /> They will not vote a player in if there is another who outperforms (or equals and outperforms) him in **both** categories. In this sense, the class of inductees are the players on the Pareto frontier, beyond which there is no other player with an equal or greater number of both MVPs and rings.
+When choosing who to induct into the HOF each year, this particular committee bases their decision on two factors alone: 1) the number of MVP awards a player won, and 2) his number of Super Bowl rings. 
+<img src="README_files/figure-markdown_github/unnamed-chunk-1-1.png" width="55%" style="float:right; padding:10px" /> 
+They will not vote a player in if there is another who outperforms (or equals and outperforms) him in **both** categories. In this sense, the class of inductees are the players on the Pareto frontier, beyond which there is no other player with an equal or greater number of both MVPs and rings.
 
 A, B, and D are on the frontier because there is no other player with both more rings and more MVPs. C, however, does not get voted in. While he has more rings than A and B, D has even more -- and D also earned the same amount of MVPs. In this case, C is 'dominated by' D.
 
