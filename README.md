@@ -11,7 +11,7 @@ This project was inspired by an article written by Neil Paine and Andrea Jones-R
 
 Pareto efficiency is a way of thinking about possible allocations of resources, between individuals or criteria (in our case, statistical measures). In particular, the Pareto efficient outcome, or the 'Pareto frontier', describes the state in which no individual or criterion can be better off or improved without hurting another individual/criterion. For those of you who've taken an intro economics class, you probably encountered Pareto in the form of the "production possibility frontier". For more info, this [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well.
 
-To prepare you for the charts I'll eventually present, here's an example I've put together:
+------------------------------------------------------------------------
 
 ### Ex. the Pareto frontier for hypothetical Hall of Fame candidates
 
@@ -21,8 +21,6 @@ When choosing who to induct into the HOF each year, this particular committee ba
 In this group of candidates with fabulously unimaginative parents, A, B, and D are on the frontier because there is no other player with both more rings and more MVPs. C, however, does not get voted in. While he has more rings than A and B, D has even more -- and D also earned the same amount of MVPs. In this case, C is 'dominated by' D.
 
 If there were a fifth candidate E, who had earned 3 MVPs and 3 rings in his career, the frontier would shift. B would then become dominated by E, and fail to make the HOF.
-
-Hopefully this helped answer any lingering questions you might have had about Pareto. Now, let's dive in with some real data!
 
 ------------------------------------------------------------------------
 
