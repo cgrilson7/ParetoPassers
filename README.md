@@ -9,24 +9,25 @@ This project was inspired by an article written by Neil Paine and Andrea Jones-R
 
 ### What is 'Pareto efficiency'?
 
-Pareto efficiency is a way of thinking about possible allocations of resources, whether those resources are physical - goods divided amongst individuals in an economy, or imaginary - criteria that can only be satisfied to a certain degree. In particular, the Pareto efficient outcome, or the 'Pareto frontier', describes the state in which no individual or criterion can be better off or improved without hurting another individual/criterion. For those of you who've taken an intro economics class, you probably encountered Pareto in the form of the "production possibility frontier".  For more info, this [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well.
-
-------------------------------------------------------------------------
+Pareto efficiency is a way of thinking about possible allocations of resources, whether those resources are physical - things divided amongst individuals in an economy, or imaginary - criteria that can only be satisfied to a certain degree. In particular, the Pareto efficient outcome, or the 'Pareto frontier', describes the state in which no individual or criterion can be better off or improved without hurting another individual/criterion. For those of you who've taken an intro economics class, you probably encountered Pareto in the form of the "production possibility frontier". For more info, this [Wikipedia article](https://en.wikipedia.org/wiki/Pareto_efficiency) explains the concept and its applications well.
 
 ### Ex. the Pareto frontier for hypothetical Hall of Fame candidates
 
 When choosing who to induct into the HOF each year, this particular committee bases their decision on two factors alone: 1) the number of MVP awards a player won, and 2) his number of Super Bowl rings. They will not vote a player in if there is another who outperforms (or equals and outperforms) him in **both** categories. In this sense, the class of inductees are the players on the Pareto frontier, beyond which there is no other player with an equal or greater number of both MVPs and rings.
-<img src="README_files/figure-markdown_github/unnamed-chunk-1-1.png" style="margin:auto width:25%" /> 
+
+<img src="README_files/figure-markdown_github/unnamed-chunk-1-1.png" width="65%" style="margin:auto; padding:10px" />
 
 In this group of candidates with incredibly unimaginative parents, A, B, and D are on the frontier because there is no other player with both more rings and more MVPs. C, however, does not get voted in. While he has more rings than A and B, D has even more -- and D also earned the same amount of MVPs. In this case, C is 'dominated by' D.
 
-If there were a fifth candidate E, who had earned 3 MVPs and 3 rings in his career, the frontier would shift. B would then become dominated by E, and fail to make the HOF.
+If there were a fifth unfortunately named candidate E, who had earned 3 MVPs and 3 rings in his career, the frontier would shift. B would then become dominated by E, fall off the frontier and out of the HOF.
 
 ------------------------------------------------------------------------
 
-Below, I've charted a couple of interesting cases, but I invite you to try it out yourself! Clone this repo and run app.R in the custom_frontier folder. 
+Below, I've charted a couple of interesting cases, but I invite you to try it out yourself! Clone this repo and run app.R in the custom\_frontier folder.
 
-What Pareto frontiers can you trace through NFL history? What combo of statistics can you find that set an exceptional group of performances apart from all others?
+What Pareto frontiers can you trace through NFL quarterbacking history? What telling combo of statistics can you choose to set apart an exceptional group of players and their performances? What QB archetypes can you define, using just two statistical measures?
+
+------------------------------------------------------------------------
 
 Gunslingers and Precision Passers
 ---------------------------------
@@ -82,3 +83,6 @@ The Dual-Threat Frontier
 | Colin Kaepernick |  25.070| 2013-01-12 | SFO  | GNB | W 45-31 |   17|   31|  263|    2|    1|    16|        181|         2|
 
 ------------------------------------------------------------------------
+
+Try it out yourself! Clone this repo and run app.R in the custom\_frontier directory.
+-------------------------------------------------------------------------------------
